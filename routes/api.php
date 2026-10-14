@@ -2,7 +2,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LibraryController;
 Route::get('/health', fn () => response()->json(['status' => 'ok']));
-Route::post('/api/v1/login', [LibraryController::class, 'login']);
+Route::post('/api/v1/auth/login', [LibraryController::class, 'login']);
 Route::middleware('auth.library')->prefix('/api/v1')->group(function () {
     Route::post('/users', [LibraryController::class, 'createLibrarian']);
     Route::get('/categories', [LibraryController::class, 'categories']);
