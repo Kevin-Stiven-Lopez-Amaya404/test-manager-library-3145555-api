@@ -2,11 +2,10 @@ FROM composer:2 AS vendor
 WORKDIR /app
 COPY composer.json ./
 RUN composer install --no-interaction --prefer-dist --no-progress --no-scripts
-FROM php:8.3-cli-bookworm
+FROM php:8.4-cli-bookworm
 RUN apt-get update \
     && apt-get install -y --no-install-recommends libpq-dev \
     && docker-php-ext-install pdo_pgsql \
-    && apt-get purge -y --auto-remove libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY --from=vendor /app/vendor ./vendor
