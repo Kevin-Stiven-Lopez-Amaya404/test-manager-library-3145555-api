@@ -2,8 +2,10 @@ FROM composer:2 AS vendor
 WORKDIR /app
 COPY composer.json ./
 RUN composer install --no-interaction --prefer-dist --no-progress --no-scripts
-FROM php:8.3-cli
-RUN docker-php-ext-install pdo_pgsql
+FROM php:8.3-cli-alpine
+RUN apk add --no-cache postgresql-dev $PHPIZE_DEPS \
+    && docker-php-ext-install pdo_pgsql \
+    && apk del $PHPIZE_DEPS
 WORKDIR /app
 COPY --from=vendor /app/vendor ./vendor
 COPY . .
